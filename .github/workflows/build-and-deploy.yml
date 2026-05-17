@@ -64,14 +64,17 @@ jobs:
           token: ${{ secrets.DEPLOY_TOKEN }}
           path: download-page
 
-      - name: Update APK and version string
+      - name: Update APK, version.json and version string
         run: |
           cp app/build/outputs/apk/release/app-release.apk download-page/sudoku-online.apk
           VERSION="${{ steps.version.outputs.name }}"
+          VERSION_CODE=$(grep 'versionCode\s*=' app/build.gradle.kts | grep -oP '\d+' | head -1)
+          printf '{"versionCode":%s,"versionName":"%s","apkUrl":"https://outblade.github.io/sudoku-online-download/sudoku-online.apk"}\n' \
+            "$VERSION_CODE" "$VERSION" > download-page/version.json
           sed -i "s/Version [0-9][0-9.]*/Version $VERSION/" download-page/index.html
           cd download-page
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add sudoku-online.apk index.html
+          git add sudoku-online.apk version.json index.html
           git diff --staged --quiet || git commit -m "chore: release APK v$VERSION"
           git push
