@@ -7,27 +7,18 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import de.sudokuonline.app.data.repository.CurrencyRepository
 import de.sudokuonline.app.data.repository.SettingsRepository
@@ -66,16 +57,15 @@ class MainActivity : ComponentActivity() {
 
             var updateInfo by remember { mutableStateOf<UpdateInfo?>(null) }
             var showUpdateDialog by remember { mutableStateOf(false) }
-            var isDownloading by remember { mutableStateOf(false) }
-            var downloadProgress by remember { mutableIntStateOf(0) }
-            val scope = rememberCoroutineScope()
 
-            // Check for update once on launch
+            // Check for update once on launch — skip if installed via Play Store
             androidx.compose.runtime.LaunchedEffect(Unit) {
-                val info = UpdateManager.checkForUpdate(BuildConfig.VERSION_CODE)
-                if (info != null) {
-                    updateInfo = info
-                    showUpdateDialog = true
+                if (!UpdateManager.isPlayStoreInstall(this@MainActivity)) {
+                    val info = UpdateManager.checkForUpdate(BuildConfig.VERSION_CODE)
+                    if (info != null) {
+                        updateInfo = info
+                        showUpdateDialog = true
+                    }
                 }
             }
 
@@ -102,46 +92,17 @@ class MainActivity : ComponentActivity() {
                                     },
                                     title = { Text("Update verfügbar") },
                                     text = {
-                                        Column {
-                                            Text("Version ${updateInfo!!.versionName} ist verfügbar. Jetzt aktualisieren?")
-                                            if (isDownloading) {
-                                                Spacer(Modifier.height(12.dp))
-                                                Text(
-                                                    "Wird heruntergeladen… $downloadProgress%",
-                                                    style = MaterialTheme.typography.bodySmall
-                                                )
-                                                Spacer(Modifier.height(6.dp))
-                                                LinearProgressIndicator(
-                                                    progress = { downloadProgress / 100f },
-                                                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
-                                                )
-                                            }
-                                        }
+                                        Text("Version ${updateInfo!!.versionName} ist verfügbar. Jetzt herunterladen?")
                                     },
                                     confirmButton = {
-                                        if (!isDownloading) {
-                                            TextButton(onClick = {
-                                                isDownloading = true
-                                                scope.launch {
-                                                    val file = UpdateManager.downloadApk(
-                                                        context = this@MainActivity,
-                                                        apkUrl = updateInfo!!.apkUrl,
-                                                        onProgress = { downloadProgress = it }
-                                                    )
-                                                    if (file != null) {
-                                                        showUpdateDialog = false
-                                                        UpdateManager.installApk(this@MainActivity, file)
-                                                    }
-                                                    isDownloading = false
-                                                }
-                                            }) { Text("Aktualisieren") }
-                                        }
+                                        TextButton(onClick = {
+                                            showUpdateDialog = false
+                                            UpdateManager.openDownloadPage(this@MainActivity)
+                                        }) { Text("Herunterladen") }
                                     },
                                     dismissButton = {
-                                        if (!isDownloading) {
-                                            TextButton(onClick = { showUpdateDialog = false }) {
-                                                Text("Später")
-                                            }
+                                        TextButton(onClick = { showUpdateDialog = false }) {
+                                            Text("Später")
                                         }
                                     }
                                 )
