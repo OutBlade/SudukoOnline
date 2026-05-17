@@ -49,6 +49,17 @@ All games use Firebase Realtime Database for sub-second state sync. Players join
 
 ---
 
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/Screenshot_20260517_212806.jpg" width="22%" alt="Home screen" />
+  <img src="screenshots/Screenshot_20260517_212815.jpg" width="22%" alt="Game menu" />
+  <img src="screenshots/Screenshot_20260517_212834.jpg" width="22%" alt="Online Spielen" />
+  <img src="screenshots/Screenshot_20260517_212841.jpg" width="22%" alt="TicTacToe Online lobby" />
+</p>
+
+---
+
 ## Architecture
 
 | Layer | Technology |
