@@ -1,0 +1,5 @@
+- Online multiplayer for Sudoku, TicTacToe and Dame
+- Ranked league system with seven tiers
+- Daily challenges and lootbox rewards
+- AI opponents for all board games
+- Automatic app updates

@@ -1,4 +1,4 @@
-name: Build & Deploy APK
+name: Build & Deploy
 
 on:
   workflow_dispatch:
@@ -35,7 +35,7 @@ jobs:
       - name: Verify keystore
         run: keytool -list -keystore "$GITHUB_WORKSPACE/release.jks" -storepass "${{ secrets.KEYSTORE_PASSWORD }}" -noprompt
 
-      - name: Build signed release APK
+      - name: Build signed release APK + AAB
         env:
           KEYSTORE_FILE: ${{ github.workspace }}/release.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -43,13 +43,15 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon
+          ./gradlew assembleRelease bundleRelease --no-daemon
 
-      - name: Get version name
+      - name: Get version info
         id: version
         run: |
           VERSION=$(grep 'versionName\s*=' app/build.gradle.kts | grep -oP '(?<=")[^"]+')
+          VERSION_CODE=$(grep 'versionCode\s*=' app/build.gradle.kts | grep -oP '\d+' | head -1)
           echo "name=$VERSION" >> $GITHUB_OUTPUT
+          echo "code=$VERSION_CODE" >> $GITHUB_OUTPUT
 
       - name: Deploy Firebase database rules
         continue-on-error: true
@@ -57,6 +59,19 @@ jobs:
           npm install -g firebase-tools
           firebase deploy --only database --config firebase/firebase.json --token "${{ secrets.FIREBASE_TOKEN }}" --non-interactive
 
+      # ── Play Store upload ──────────────────────────────────────────────────
+      - name: Upload AAB to Play Store (internal track)
+        if: secrets.PLAY_SERVICE_ACCOUNT_JSON != ''
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: de.sudokuonline.app
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: internal
+          status: completed
+          whatsNewDirectory: fastlane/metadata/android/en-US/changelogs
+
+      # ── Download page update ───────────────────────────────────────────────
       - name: Checkout download page repo
         uses: actions/checkout@v4
         with:
@@ -68,7 +83,7 @@ jobs:
         run: |
           cp app/build/outputs/apk/release/app-release.apk download-page/sudoku-online.apk
           VERSION="${{ steps.version.outputs.name }}"
-          VERSION_CODE=$(grep 'versionCode\s*=' app/build.gradle.kts | grep -oP '\d+' | head -1)
+          VERSION_CODE="${{ steps.version.outputs.code }}"
           printf '{"versionCode":%s,"versionName":"%s","apkUrl":"https://outblade.github.io/sudoku-online-download/sudoku-online.apk"}\n' \
             "$VERSION_CODE" "$VERSION" > download-page/version.json
           sed -i "s/Version [0-9][0-9.]*/Version $VERSION/" download-page/index.html
