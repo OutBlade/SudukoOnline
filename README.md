@@ -153,10 +153,10 @@ Required repository secrets:
 5. Deploy the included database rules:
 
 ```bash
-firebase deploy --only database
+firebase deploy --only database --config firebase/firebase.json
 ```
 
-The `firebase-database-rules.json` at the project root contains the required security rules and field indexes for all queries.
+The `firebase/firebase-database-rules.json` file contains the required security rules and field indexes for all queries.
 
 ---
 

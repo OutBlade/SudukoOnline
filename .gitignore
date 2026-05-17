@@ -15,5 +15,6 @@
 local.properties
 .claude/
 .kotlin/
+.idea/
 *.jks
 release.jks

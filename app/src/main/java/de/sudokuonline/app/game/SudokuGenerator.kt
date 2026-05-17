@@ -10,7 +10,7 @@ import kotlin.random.Random
  */
 class SudokuGenerator {
 
-    private var random: Random = Random
+                    private var random: Random = Random
 
     /**
      * Generate a new Sudoku puzzle with the specified difficulty
