@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "215085382554",
+    "project_id": "sudokuonline-f59b9",
+    "storage_bucket": "sudokuonline-f59b9.firebasestorage.app",
+    "firebase_url": "https://sudokuonline-f59b9-default-rtdb.europe-west1.firebasedatabase.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215085382554:android:bc289ba0cb2c1dd4fbd823",
+        "android_client_info": {
+          "package_name": "de.sudokuonline.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiwN5ykUeyU4RDvtUGyVh-orjrItPdX_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

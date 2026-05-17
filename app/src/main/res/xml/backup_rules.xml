@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Backup user preferences and game progress -->
+    <include domain="sharedpref" path="."/>
+    <!-- Exclude sensitive data that shouldn't be backed up -->
+    <exclude domain="sharedpref" path="currency_prefs.xml"/>
+</full-backup-content>

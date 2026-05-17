@@ -1,0 +1,38 @@
+{
+  "rules": {
+    "players": {
+      "$userId": {
+        ".read": "auth != null && auth.uid == $userId",
+        ".write": "auth != null && auth.uid == $userId"
+      }
+    },
+    "rooms": {
+      ".read": "auth != null",
+      "$roomId": {
+        ".write": "auth != null",
+        ".indexOn": ["status", "gameMode", "code"]
+      }
+    },
+    "matchmaking": {
+      ".read": "auth != null",
+      ".indexOn": ["gameMode", "difficulty", "timestamp"],
+      "$playerId": {
+        ".write": "auth != null && auth.uid == $playerId"
+      }
+    },
+    "tictactoe_rooms": {
+      ".read": "auth != null",
+      "$roomId": {
+        ".write": "auth != null",
+        ".indexOn": ["status", "gameMode", "code"]
+      }
+    },
+    "dame_rooms": {
+      ".read": "auth != null",
+      "$roomId": {
+        ".write": "auth != null",
+        ".indexOn": ["status", "code"]
+      }
+    }
+  }
+}

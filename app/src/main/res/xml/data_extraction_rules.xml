@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- Backup user preferences and game progress -->
+        <include domain="sharedpref" path="."/>
+        <!-- Exclude sensitive data -->
+        <exclude domain="sharedpref" path="currency_prefs.xml"/>
+    </cloud-backup>
+    <device-transfer>
+        <include domain="sharedpref" path="."/>
+    </device-transfer>
+</data-extraction-rules>
