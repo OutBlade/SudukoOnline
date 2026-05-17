@@ -45,10 +45,16 @@ class DameViewModel : ViewModel() {
 
         observeJob?.cancel()
         observeJob = viewModelScope.launch {
-            repository.observeRoom(roomId).collect { room ->
-                if (room != null) {
-                    handleRoomUpdate(room)
+            try {
+                repository.observeRoom(roomId).collect { room ->
+                    if (room != null) {
+                        handleRoomUpdate(room)
+                    }
                 }
+            } catch (e: Exception) {
+                _state.value = _state.value.copy(
+                    error = "Verbindung unterbrochen. Bitte erneut versuchen."
+                )
             }
         }
     }

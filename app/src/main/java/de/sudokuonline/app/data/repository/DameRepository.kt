@@ -129,7 +129,8 @@ class DameRepository {
                 trySend(parseRoom(snapshot))
             }
             override fun onCancelled(error: DatabaseError) {
-                close(error.toException())
+                android.util.Log.e("DameRepository", "observeRoom cancelled: ${error.message}")
+                trySend(null)
             }
         }
         roomsRef.child(roomId).addValueEventListener(listener)
@@ -326,7 +327,8 @@ class DameRepository {
                 trySend(rooms)
             }
             override fun onCancelled(error: DatabaseError) {
-                close(error.toException())
+                android.util.Log.e("DameRepository", "observeAvailableRooms cancelled: ${error.message}")
+                trySend(emptyList())
             }
         }
         query.addValueEventListener(listener)

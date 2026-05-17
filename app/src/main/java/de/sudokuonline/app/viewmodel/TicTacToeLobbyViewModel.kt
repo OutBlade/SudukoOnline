@@ -38,8 +38,14 @@ class TicTacToeLobbyViewModel : ViewModel() {
     fun loadAvailableRooms() {
         roomsObserverJob?.cancel()
         roomsObserverJob = viewModelScope.launch {
-            repository.observeAvailableRooms().collect { rooms ->
-                _state.value = _state.value.copy(availableRooms = rooms)
+            try {
+                repository.observeAvailableRooms().collect { rooms ->
+                    _state.value = _state.value.copy(availableRooms = rooms)
+                }
+            } catch (e: Exception) {
+                _state.value = _state.value.copy(
+                    error = "Räume konnten nicht geladen werden. Bitte erneut versuchen."
+                )
             }
         }
     }

@@ -181,7 +181,8 @@ class TicTacToeRepository {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                close(error.toException())
+                android.util.Log.e("TicTacToeRepository", "observeRoom cancelled: ${error.message}")
+                trySend(null)
             }
         }
 
@@ -506,7 +507,8 @@ class TicTacToeRepository {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                close(error.toException())
+                android.util.Log.e("TicTacToeRepository", "observeAvailableRooms cancelled: ${error.message}")
+                trySend(emptyList())
             }
         }
 

@@ -215,8 +215,14 @@ class TicTacToeViewModel : ViewModel() {
     private fun observeRoom(roomId: String) {
         roomObserverJob?.cancel()
         roomObserverJob = viewModelScope.launch {
-            repository.observeRoom(roomId).collect { room ->
-                room?.let { handleRoomUpdate(it) }
+            try {
+                repository.observeRoom(roomId).collect { room ->
+                    room?.let { handleRoomUpdate(it) }
+                }
+            } catch (e: Exception) {
+                _state.value = _state.value.copy(
+                    error = "Verbindung unterbrochen. Bitte erneut versuchen."
+                )
             }
         }
     }
