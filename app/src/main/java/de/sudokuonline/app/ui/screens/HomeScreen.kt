@@ -65,6 +65,7 @@ fun HomeScreen(
     onExamSimulatorClick: () -> Unit = {},
     onLENQuizClick: () -> Unit = {},
     onLENTrainerClick: () -> Unit = {},
+    onHM2TrainerClick: () -> Unit = {},
     onBlackjackClick: () -> Unit = {},
     onSevenClick: () -> Unit = {},
     onProfileClick: () -> Unit,
@@ -431,6 +432,16 @@ fun HomeScreen(
                     onClick = onLENTrainerClick,
                     containerColor = Color(0xFF1565C0).copy(alpha = 0.15f),
                     contentColor = Color(0xFF0D47A1),
+                )
+
+                // HM2 Trainer button
+                MainMenuButton(
+                    icon = Icons.Default.Functions,
+                    title = "HM2 Trainer",
+                    subtitle = "Vektoranalysis · Eigenwerte · Lagrange · KIT",
+                    onClick = onHM2TrainerClick,
+                    containerColor = Color(0xFF7B1FA2).copy(alpha = 0.13f),
+                    contentColor = Color(0xFF6A1B9A),
                 )
 
                 // Blackjack button

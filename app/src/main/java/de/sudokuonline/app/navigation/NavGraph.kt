@@ -135,6 +135,9 @@ sealed class Screen(val route: String) {
     object LENQuiz : Screen("len_quiz")
     object LENTrainer : Screen("len_trainer")
 
+    // HM2 Trainer
+    object HM2Trainer : Screen("hm2_trainer")
+
     // Splash
     object Splash : Screen("splash")
 
@@ -290,6 +293,9 @@ fun SudokuNavGraph(
                 },
                 onLENTrainerClick = {
                     navController.navigate(Screen.LENTrainer.route)
+                },
+                onHM2TrainerClick = {
+                    navController.navigate(Screen.HM2Trainer.route)
                 },
                 onBlackjackClick = {
                     navController.navigate(Screen.Blackjack.route)
@@ -1226,6 +1232,13 @@ fun SudokuNavGraph(
         // LEN MC Trainer Screen
         composable(Screen.LENTrainer.route) {
             LENTrainerScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        // HM2 Trainer Screen
+        composable(Screen.HM2Trainer.route) {
+            Hm2TrainerScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }

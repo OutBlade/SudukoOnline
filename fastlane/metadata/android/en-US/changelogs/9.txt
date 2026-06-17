@@ -1,0 +1,1 @@
+HM2 Trainer added: 42 flashcards covering Vektoranalysis, Eigenwerte, Lagrange, Gauss und Flächenintegrale — with LaTeX rendering and instant feedback.
