@@ -1,5 +1,9 @@
 # Sudoku Online
 
+<!-- project-navigation -->
+[Website](https://outblade.github.io/sudoku-online-download/) · [Getting started](#building) · [Features](#games) · [Documentation](#architecture)
+<!-- /project-navigation -->
+
 **A multiplayer puzzle and board game platform for Android.**
 
 Real-time online matches, ranked leagues, AI opponents, daily challenges, and an in-game economy — all in one app. Built with Jetpack Compose and Firebase Realtime Database.
